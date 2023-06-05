@@ -56,6 +56,8 @@ import {withStyles} from 'lit-with-styles/bare';
 @customElement('my-element') @withStyles
 class MyElement extends LitElement {}
 ```
+*(You will need to set moduleResolution to `nodenext` in your TS configuration file for that.)*
+
 ## Installation
 
 ```
