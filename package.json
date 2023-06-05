@@ -8,11 +8,11 @@
 	"exports": {
 		".": {
 			"default": "./lib",
-			"types": "./lib"
+			"types": "./lib/index.d.ts"
 		},
 		"./bare": {
 			"default": "./lib/bare",
-			"types": "./lib/bare"
+			"types": "./lib/bare/index.d.ts"
 		}
 	},
 	"scripts": {
