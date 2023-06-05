@@ -14,20 +14,25 @@ class MyElement extends LitElement {
 ```
 The decorator will create a stylesheet in the background and inject it into the element *(It's optimized in a way elements sharing same styles will share the same stylesheet.)*
 
-You can also pass an array of styles into the decorator. It accepts both string and css tagged literal from Lit package:
+You can also pass an array of styles into the decorator. Here's all the accepted types:
 
 ```typescript
 import {css} from 'lit';
+import elementsStyles from './element-styles.css' assert { type: 'css' };
 
 @withStyles([
-	// string version
+	// [1]
 	':host { background-color: red }',
-
-	// css tagged literal
+	// [2]
 	css`:host { color: white }`,
+	// [3]
+	elementStyles
 ])
 ```
-(The tagged literal version is the preferred way over the string version because it's considered more safe.)
+[1] string version  
+[2] css tagged literal version  
+[3] css module version  
+*(You can also pass a CSSStyleSheet object)*
 
 ## Base styles
 

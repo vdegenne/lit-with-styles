@@ -1,6 +1,7 @@
 import {withStyles, setBaseStyles} from '../lib';
 import {LitElement as Lit, css, html} from 'lit';
 import {customElement} from 'lit/decorators.js';
+import hihi from './styles.css?inline'
 
 setBaseStyles(
 	css`
