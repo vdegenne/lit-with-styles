@@ -1,6 +1,6 @@
 {
   "name": "lit-with-styles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "@withStyles decorator for Lit",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -29,17 +29,17 @@
         "lib"
       ]
     },
-	 "dev": {
-		"command": "vite ./dev --host",
-		"service": true,
-		"files": [
-			"lib",
-			"vite.config.json"
-		],
-		"dependencies": [
-			"build"
-		]
-	 }
+    "dev": {
+      "command": "vite ./dev --host",
+      "service": true,
+      "files": [
+        "lib",
+        "vite.config.json"
+      ],
+      "dependencies": [
+        "build"
+      ]
+    }
   },
   "license": "MIT",
   "keywords": [
