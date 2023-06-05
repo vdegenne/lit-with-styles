@@ -1,69 +1,69 @@
 {
-  "name": "lit-with-styles",
-  "version": "1.0.2",
-  "description": "@withStyles decorator for Lit",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "type": "module",
-  "exports": {
-    ".": {
-      "default": "./lib",
-		"types": "./lib"
-    },
-    "./bare": {
-      "default": "./lib/bare",
-		"types": "./lib/bare"
-    }
-  },
-  "scripts": {
-    "dev": "wireit",
-    "build": "wireit"
-  },
-  "wireit": {
-    "build": {
-      "command": "tsc --pretty",
-      "clean": "if-file-deleted",
-      "files": [
-        "src",
-        "tsconfig.json"
-      ],
-      "output": [
-        "lib"
-      ]
-    },
-    "dev": {
-      "command": "vite ./dev --host",
-      "service": true,
-      "files": [
-        "lib",
-        "vite.config.json"
-      ],
-      "dependencies": [
-        "build"
-      ]
-    }
-  },
-  "license": "MIT",
-  "keywords": [
-    "lit",
-    "tc39",
-    "decorator",
-    "styles",
-    "tailwind"
-  ],
-  "author": "Valentin Degenne <vdegenne@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vdegenne/lit-with-styles.git"
-  },
-  "devDependencies": {
-    "lit": "^2.7.4",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.6",
-    "wireit": "^0.9.5"
-  },
-  "files": [
-    "/lib",
-    "/logo.png"
-  ]
+	"name": "lit-with-styles",
+	"version": "1.0.2",
+	"description": "@withStyles decorator for Lit",
+	"main": "lib/index.js",
+	"module": "lib/index.js",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./lib",
+			"types": "./lib"
+		},
+		"./bare": {
+			"default": "./lib/bare",
+			"types": "./lib/bare"
+		}
+	},
+	"scripts": {
+		"dev": "wireit",
+		"build": "wireit"
+	},
+	"wireit": {
+		"build": {
+			"command": "tsc --pretty",
+			"clean": "if-file-deleted",
+			"files": [
+				"src",
+				"tsconfig.json"
+			],
+			"output": [
+				"lib"
+			]
+		},
+		"dev": {
+			"command": "vite ./dev --host",
+			"service": true,
+			"files": [
+				"lib",
+				"vite.config.json"
+			],
+			"dependencies": [
+				"build"
+			]
+		}
+	},
+	"license": "MIT",
+	"keywords": [
+		"lit",
+		"tc39",
+		"decorator",
+		"styles",
+		"tailwind"
+	],
+	"author": "Valentin Degenne <vdegenne@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vdegenne/lit-with-styles.git"
+	},
+	"devDependencies": {
+		"lit": "^2.7.4",
+		"typescript": "^5.0.4",
+		"vite": "^4.3.6",
+		"wireit": "^0.9.5"
+	},
+	"files": [
+		"/lib",
+		"/logo.png"
+	]
 }

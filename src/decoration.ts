@@ -13,192 +13,192 @@ let _baseStyles: string | CSSResultOrNative = '';
  * @param content base CSS literal to inject in every element that uses the decorator.
  */
 export async function setBaseStyles(content: string | CSSResultOrNative) {
-  _baseStyles = content;
+	_baseStyles = content;
 }
 
 const instances: Set<ReactiveElement> = new Set();
 
 class InstancesController implements ReactiveController {
-  _host: ReactiveElement;
+	_host: ReactiveElement;
 
-  constructor(host: ReactiveElement) {
-    (this._host = host).addController(this);
-  }
+	constructor(host: ReactiveElement) {
+		(this._host = host).addController(this);
+	}
 
-  hostConnected(): void {
-    instances.add(this._host);
-  }
+	hostConnected(): void {
+		instances.add(this._host);
+	}
 
-  hostDisconnected(): void {
-    instances.delete(this._host);
-  }
+	hostDisconnected(): void {
+		instances.delete(this._host);
+	}
 }
 
 const cachedStyleSheets: {[plain: string]: CSSResultOrNative | undefined} = {};
 
 function getStylesheet(input: string | CSSResultOrNative) {
-  if (typeof input === 'string') {
-    return (
-      cachedStyleSheets[input] ??
-      (cachedStyleSheets[input] = getCompatibleStyle(unsafeCSS(input)))
-    );
-  } else {
-    // Probably a Stylesheet that lit can understand so we return as-is.
-    return input;
-  }
+	if (typeof input === 'string') {
+		return (
+			cachedStyleSheets[input] ??
+			(cachedStyleSheets[input] = getCompatibleStyle(unsafeCSS(input)))
+		);
+	} else {
+		// Probably a Stylesheet that lit can understand so we return as-is.
+		return input;
+	}
 }
 
 export function _withStylesDecorativeFunction(
-  ctor: typeof ReactiveElement,
-  elementStyles?: (string | CSSResultOrNative) | (string | CSSResultOrNative)[],
-  base?: string | CSSResultOrNative
+	ctor: typeof ReactiveElement,
+	elementStyles?: (string | CSSResultOrNative) | (string | CSSResultOrNative)[],
+	base?: string | CSSResultOrNative
 ) {
-  // Here one trick is to called protected method `finalize`
-  // to make sure the `elementStyles` static field is
-  // initialized with user-custom styles.
-  // @ts-ignore
-  ctor.finalize();
-  // add styles
-  base = base ?? _baseStyles;
-  ctor.elementStyles.unshift(getStylesheet(base));
-  // add element-specific styles
-  if (elementStyles !== undefined) {
-    for (const style of Array.isArray(elementStyles)
-      ? elementStyles
-      : [elementStyles]) {
-      const stylesheet = getStylesheet(style);
-      const elementStyles = ctor.elementStyles;
-      if (elementStyles.includes(stylesheet)) {
-        return;
-      } else {
-        elementStyles.push(stylesheet);
-      }
-    }
-  }
-  // dark/light mode controller on instances
-  ctor.addInitializer((instance: ReactiveElement) => {
-    new InstancesController(instance);
-  });
+	// Here one trick is to called protected method `finalize`
+	// to make sure the `elementStyles` static field is
+	// initialized with user-custom styles.
+	// @ts-ignore
+	ctor.finalize();
+	// add styles
+	base = base ?? _baseStyles;
+	ctor.elementStyles.unshift(getStylesheet(base));
+	// add element-specific styles
+	if (elementStyles !== undefined) {
+		for (const style of Array.isArray(elementStyles)
+			? elementStyles
+			: [elementStyles]) {
+			const stylesheet = getStylesheet(style);
+			const elementStyles = ctor.elementStyles;
+			if (elementStyles.includes(stylesheet)) {
+				return;
+			} else {
+				elementStyles.push(stylesheet);
+			}
+		}
+	}
+	// dark/light mode controller on instances
+	ctor.addInitializer((instance: ReactiveElement) => {
+		new InstancesController(instance);
+	});
 }
 
 export function withStyles(
-  elementStyles?: (string | CSSResultOrNative) | (string | CSSResultOrNative)[],
-  base?: string | CSSResultOrNative
+	elementStyles?: (string | CSSResultOrNative) | (string | CSSResultOrNative)[],
+	base?: string | CSSResultOrNative
 ) {
-  return function (ctor: typeof ReactiveElement) {
-    _withStylesDecorativeFunction(ctor, elementStyles, base);
-  };
+	return function (ctor: typeof ReactiveElement) {
+		_withStylesDecorativeFunction(ctor, elementStyles, base);
+	};
 }
 
 const localStorageHandler = 'color-mode';
 type ModeValues = (typeof ThemeManager.MODES)[keyof typeof ThemeManager.MODES];
 
 export class ThemeManager {
-  static MODES = {
-    Light: 'light',
-    Dark: 'dark',
-    System: 'system',
-  } as const;
+	static MODES = {
+		Light: 'light',
+		Dark: 'dark',
+		System: 'system',
+	} as const;
 
-  static #active = false;
-  static #mode: ModeValues = this.MODES.System;
-  static #lightQuery = window.matchMedia('(prefers-color-scheme: light)');
-  static #darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	static #active = false;
+	static #mode: ModeValues = this.MODES.System;
+	static #lightQuery = window.matchMedia('(prefers-color-scheme: light)');
+	static #darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-  static get prefersColorScheme(): 'light' | 'dark' | undefined {
-    if (this.#darkQuery.matches) {
-      return 'dark';
-    } else if (this.#lightQuery.matches) {
-      return 'light';
-    }
-    return undefined;
-  }
+	static get prefersColorScheme(): 'light' | 'dark' | undefined {
+		if (this.#darkQuery.matches) {
+			return 'dark';
+		} else if (this.#lightQuery.matches) {
+			return 'light';
+		}
+		return undefined;
+	}
 
-  static get appliedTheme() {
-    if (document.documentElement.classList.contains('dark')) {
-      return 'dark';
-    } else if (document.documentElement.classList.contains('light')) {
-      return 'light';
-    } else {
-      return undefined;
-    }
-  }
+	static get appliedTheme() {
+		if (document.documentElement.classList.contains('dark')) {
+			return 'dark';
+		} else if (document.documentElement.classList.contains('light')) {
+			return 'light';
+		} else {
+			return undefined;
+		}
+	}
 
-  static get mode() {
-    return this.#mode;
-  }
-  static set mode(value: ModeValues) {
-    this.#mode = value;
-    this.#applyThemeToDOM();
-    this.#saveModeInLocalStorage();
-  }
+	static get mode() {
+		return this.#mode;
+	}
+	static set mode(value: ModeValues) {
+		this.#mode = value;
+		this.#applyThemeToDOM();
+		this.#saveModeInLocalStorage();
+	}
 
-  static init() {
-    if (this.#active) {
-      return;
-    }
-    this.#active = true;
+	static init() {
+		if (this.#active) {
+			return;
+		}
+		this.#active = true;
 
-    // The light media query only get triggered
-    // when the dark one is changed
-    this.#darkQuery.addEventListener(
-      'change',
-      this.#onPrefersColorSchemeChange.bind(this)
-    );
+		// The light media query only get triggered
+		// when the dark one is changed
+		this.#darkQuery.addEventListener(
+			'change',
+			this.#onPrefersColorSchemeChange.bind(this)
+		);
 
-    this.#loadModeValue();
-    this.#saveModeInLocalStorage();
-    this.#applyThemeToDOM();
-  }
+		this.#loadModeValue();
+		this.#saveModeInLocalStorage();
+		this.#applyThemeToDOM();
+	}
 
-  static #onPrefersColorSchemeChange(e: MediaQueryListEvent) {
-    this.#applyThemeToDOM();
-  }
+	static #onPrefersColorSchemeChange(e: MediaQueryListEvent) {
+		this.#applyThemeToDOM();
+	}
 
-  static #loadModeValue() {
-    this.#mode =
-      (localStorage.getItem(`${localStorageHandler}`) as ModeValues) ||
-      this.MODES.System;
-  }
-  static #saveModeInLocalStorage() {
-    localStorage.setItem(`${localStorageHandler}`, this.#mode);
-  }
+	static #loadModeValue() {
+		this.#mode =
+			(localStorage.getItem(`${localStorageHandler}`) as ModeValues) ||
+			this.MODES.System;
+	}
+	static #saveModeInLocalStorage() {
+		localStorage.setItem(`${localStorageHandler}`, this.#mode);
+	}
 
-  static #resolveTheme() {
-    switch (this.#mode) {
-      case 'light':
-      case 'dark':
-        return this.#mode;
-      case 'system':
-        switch (this.prefersColorScheme) {
-          case 'light':
-          case 'dark':
-            return this.prefersColorScheme;
-          default:
-            // undetermined (default to light)
-            return 'light';
-        }
-    }
-  }
+	static #resolveTheme() {
+		switch (this.#mode) {
+			case 'light':
+			case 'dark':
+				return this.#mode;
+			case 'system':
+				switch (this.prefersColorScheme) {
+					case 'light':
+					case 'dark':
+						return this.prefersColorScheme;
+					default:
+						// undetermined (default to light)
+						return 'light';
+				}
+		}
+	}
 
-  static #applyThemeToDOM() {
-    const theme = this.#resolveTheme();
-    if (theme == this.appliedTheme) {
-      return;
-    }
-    this.#removeThemeClassesFromCandidates();
-    document.documentElement.classList.add(theme);
-    for (const instance of instances) {
-      instance.classList.add(theme);
-    }
-  }
+	static #applyThemeToDOM() {
+		const theme = this.#resolveTheme();
+		if (theme == this.appliedTheme) {
+			return;
+		}
+		this.#removeThemeClassesFromCandidates();
+		document.documentElement.classList.add(theme);
+		for (const instance of instances) {
+			instance.classList.add(theme);
+		}
+	}
 
-  static #removeThemeClassesFromCandidates() {
-    ['light', 'dark'].forEach((theme) => {
-      document.documentElement.classList.remove(theme);
-      for (const instance of instances) {
-        instance.classList.remove(theme);
-      }
-    });
-  }
+	static #removeThemeClassesFromCandidates() {
+		['light', 'dark'].forEach((theme) => {
+			document.documentElement.classList.remove(theme);
+			for (const instance of instances) {
+				instance.classList.remove(theme);
+			}
+		});
+	}
 }
