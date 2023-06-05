@@ -7,10 +7,12 @@
   "type": "module",
   "exports": {
     ".": {
-      "default": "./lib/index.js"
+      "default": "./lib",
+		"types": "./lib"
     },
     "./bare": {
-      "default": "./lib/bare/index.js"
+      "default": "./lib/bare",
+		"types": "./lib/bare"
     }
   },
   "scripts": {
