@@ -3,7 +3,7 @@
  * Copyright (c) 2023 Valentin Degenne
  * SPDX-License-Identifier: MIT
  */
-import {CSSResult, getCompatibleStyle, unsafeCSS} from 'lit';
+import {getCompatibleStyle, unsafeCSS} from 'lit';
 import type {ReactiveElement, ReactiveController, CSSResultOrNative} from 'lit';
 
 let _baseStyles: string | CSSResultOrNative = '';
@@ -91,17 +91,17 @@ export function withStyles(
 }
 
 const localStorageHandler = 'color-mode';
-type ModeValues = (typeof ThemeManager.MODES)[keyof typeof ThemeManager.MODES];
+type ModeValues = (typeof ThemeManager.Mode)[keyof typeof ThemeManager.Mode];
 
 export class ThemeManager {
-	static MODES = {
-		Light: 'light',
-		Dark: 'dark',
-		System: 'system',
+	static Mode = {
+		LIGHT: 'light',
+		DARK: 'dark',
+		SYSTEM: 'system',
 	} as const;
 
 	static #active = false;
-	static #mode: ModeValues = this.MODES.System;
+	static #mode: ModeValues = this.Mode.SYSTEM;
 	static #lightQuery = window.matchMedia('(prefers-color-scheme: light)');
 	static #darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -158,7 +158,7 @@ export class ThemeManager {
 	static #loadModeValue() {
 		this.#mode =
 			(localStorage.getItem(`${localStorageHandler}`) as ModeValues) ||
-			this.MODES.System;
+			this.Mode.SYSTEM;
 	}
 	static #saveModeInLocalStorage() {
 		localStorage.setItem(`${localStorageHandler}`, this.#mode);
