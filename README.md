@@ -27,7 +27,7 @@ import {css} from 'lit';
 	css`:host { color: white }`,
 ])
 ```
-(The tagged literal version is rather recommended to be used over the string version because it's considered more safe.)
+(The tagged literal version is the preferred way over the string version because it's considered more safe.)
 
 ## Base styles
 

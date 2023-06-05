@@ -24,6 +24,7 @@ setBaseStyles(
   css`:host { background: black }`
 )
 class MyElement extends Lit {
+	static styles = css`b { text-transform: uppercase }`
   render() {
     return html`<b>hey lit</b>`;
   }
