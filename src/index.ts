@@ -1,1 +1,1 @@
-export {withStyles, ThemeManager, setBaseStyles} from './decoration.js';
+export {withStyles, ThemeManager, setBaseStyles, ColorMode} from './decoration.js';

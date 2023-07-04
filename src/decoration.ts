@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 import {getCompatibleStyle, unsafeCSS} from 'lit';
-import type {ReactiveElement, ReactiveController, CSSResultOrNative} from 'lit';
+import type {ReactiveElement, ReactiveController, CSSResultOrNative, LitElement} from 'lit';
 
 let _baseStyles: string | CSSResultOrNative = '';
 
@@ -48,8 +48,10 @@ function getStylesheet(input: string | CSSResultOrNative) {
 	}
 }
 
+export type LitElementClass = Omit<typeof LitElement, 'new'>;
+
 export function _withStylesDecorativeFunction(
-	ctor: typeof ReactiveElement,
+	ctor: LitElementClass,
 	elementStyles?: (string | CSSResultOrNative) | (string | CSSResultOrNative)[],
 	base?: string | CSSResultOrNative
 ) {
@@ -85,13 +87,15 @@ export function withStyles(
 	elementStyles?: (string | CSSResultOrNative) | (string | CSSResultOrNative)[],
 	base?: string | CSSResultOrNative
 ) {
-	return function (ctor: typeof ReactiveElement) {
+	return function (ctor: LitElementClass) {
 		_withStylesDecorativeFunction(ctor, elementStyles, base);
+		return ctor as any;
 	};
 }
 
 const localStorageHandler = 'color-mode';
-type ModeValues = (typeof ThemeManager.Mode)[keyof typeof ThemeManager.Mode];
+export type ColorMode =
+	(typeof ThemeManager.Mode)[keyof typeof ThemeManager.Mode];
 
 export class ThemeManager {
 	static Mode = {
@@ -101,7 +105,7 @@ export class ThemeManager {
 	} as const;
 
 	static #active = false;
-	static #mode: ModeValues = this.Mode.SYSTEM;
+	static #mode: ColorMode = this.Mode.SYSTEM;
 	static #lightQuery = window.matchMedia('(prefers-color-scheme: light)');
 	static #darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -127,7 +131,7 @@ export class ThemeManager {
 	static get mode() {
 		return this.#mode;
 	}
-	static set mode(value: ModeValues) {
+	static set mode(value: ColorMode) {
 		this.#mode = value;
 		this.#applyThemeToDOM();
 		this.#saveModeInLocalStorage();
@@ -157,7 +161,7 @@ export class ThemeManager {
 
 	static #loadModeValue() {
 		this.#mode =
-			(localStorage.getItem(`${localStorageHandler}`) as ModeValues) ||
+			(localStorage.getItem(`${localStorageHandler}`) as ColorMode) ||
 			this.Mode.SYSTEM;
 	}
 	static #saveModeInLocalStorage() {

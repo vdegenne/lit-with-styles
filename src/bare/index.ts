@@ -1,7 +1,7 @@
 import type {ReactiveElement} from 'lit';
-import {_withStylesDecorativeFunction} from '../decoration.js';
+import {LitElementClass, _withStylesDecorativeFunction} from '../decoration.js';
 
-export function withStyles(ctor: typeof ReactiveElement) {
+export function withStyles(ctor: LitElementClass) {
 	_withStylesDecorativeFunction(ctor);
 }
 
