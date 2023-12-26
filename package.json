@@ -1,17 +1,17 @@
 {
 	"name": "lit-with-styles",
-	"version": "1.1.1",
+	"version": "2.1.2",
 	"description": "@withStyles decorator for Lit",
 	"main": "lib/index.js",
 	"module": "lib/index.js",
 	"type": "module",
 	"exports": {
 		".": {
-			"default": "./lib",
+			"default": "./lib/index.js",
 			"types": "./lib/index.d.ts"
 		},
 		"./bare": {
-			"default": "./lib/bare",
+			"default": "./lib/bare/index.js",
 			"types": "./lib/bare/index.d.ts"
 		}
 	},
@@ -57,6 +57,7 @@
 		"url": "https://github.com/vdegenne/lit-with-styles.git"
 	},
 	"devDependencies": {
+		"@changesets/cli": "^2.27.1",
 		"lit": "^2.7.4",
 		"typescript": "^5.0.4",
 		"vite": "^4.3.6",

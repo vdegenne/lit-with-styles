@@ -1,21 +1,21 @@
 {
-  "compilerOptions": {
-    "target": "es2022",
-    "module": "es2022",
-    "moduleResolution": "nodenext",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "inlineSources": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false,
-    "outDir": "lib",
-    "rootDir": "src",
-    "strict": true,
-    "types": ["vite/client"]
-  },
-  "include": ["src/**/*"],
-  "exclude": []
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "ES2022",
+		"moduleResolution": "Node",
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"inlineSources": true,
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"useDefineForClassFields": false,
+		"outDir": "lib",
+		"rootDir": "src",
+		"strict": true,
+		"types": ["vite/client"]
+	},
+	"include": ["src/**/*"],
+	"exclude": []
 }
