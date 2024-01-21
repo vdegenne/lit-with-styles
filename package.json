@@ -1,6 +1,6 @@
 {
 	"name": "lit-with-styles",
-	"version": "2.1.2",
+	"version": "2.1.3",
 	"description": "@withStyles decorator for Lit",
 	"main": "lib/index.js",
 	"module": "lib/index.js",

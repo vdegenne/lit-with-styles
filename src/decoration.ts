@@ -139,22 +139,24 @@ export class ThemeManager {
 		this.#saveModeInLocalStorage();
 	}
 
+	/**
+	 * This initialization method should be called after all depending elements
+	 * has been initialized to make sure theme values are properly set on them
+	 * in the DOM.
+	 */
 	static init() {
 		if (this.#active) {
 			return;
 		}
 		this.#active = true;
 
-		this.#loadModeValue();
-		this.#applyScheme();
+		// See `set mode`
+		this.mode = this.#loadModeValue();
 
 		this.#darkQuery.addEventListener(
 			'change',
 			this.#onPrefersColorSchemeChange.bind(this),
 		);
-
-		// The following shouldn't be necessary
-		// this.#saveModeInLocalStorage();
 	}
 
 	static #onPrefersColorSchemeChange() {
@@ -162,8 +164,8 @@ export class ThemeManager {
 	}
 
 	static #loadModeValue() {
-		this.#mode =
-			(localStorage.getItem('color-mode') as ColorMode) ?? ColorMode.SYSTEM;
+		return (this.#mode =
+			(localStorage.getItem('color-mode') as ColorMode) ?? ColorMode.SYSTEM);
 	}
 	static #saveModeInLocalStorage() {
 		localStorage.setItem('color-mode', this.#mode);
