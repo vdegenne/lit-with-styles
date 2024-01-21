@@ -61,13 +61,13 @@ export function _withStylesDecorativeFunction(
 	elementStyles?: (string | CSSResultOrNative) | (string | CSSResultOrNative)[],
 	base?: string | CSSResultOrNative,
 ) {
-	// Here one trick is to called protected method `finalize`
+	// One trick here is to call protected method `finalize`
 	// to make sure the `elementStyles` static field is
 	// initialized with user-custom styles.
 	// @ts-ignore
 	ctor.finalize();
 	// add styles
-	base = base ?? _baseStyles;
+	base ??= _baseStyles;
 	ctor.elementStyles.unshift(getStylesheet(base));
 	// add element-specific styles
 	if (elementStyles !== undefined) {
